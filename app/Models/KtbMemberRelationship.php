@@ -51,10 +51,18 @@ class KtbMemberRelationship extends Pivot
     }
 
     /**
-     * Check if relationship is active
+     * Check if relationship is rutin (active)
      */
-    public function isActive(): bool
+    public function isRutin(): bool
     {
-        return $this->status === 'active';
+        return $this->status === 'rutin';
+    }
+
+    /**
+     * Check if relationship is dipotong (terminated)
+     */
+    public function isDipotong(): bool
+    {
+        return $this->status === 'dipotong';
     }
 }
