@@ -30,3 +30,13 @@ Route::middleware(['auth'])->group(function () {
         )
         ->name('two-factor.show');
 });
+
+// KTB Member CRUD
+Route::resource('ktb-members', App\Http\Controllers\KtbMemberController::class)->middleware('auth');
+
+// KTB Tree Visualization
+Route::middleware(['auth'])->group(function () {
+    Route::get('ktb-tree', [App\Http\Controllers\KtbTreeController::class, 'index'])->name('ktb-tree.index');
+    Route::get('ktb-tree/data', [App\Http\Controllers\KtbTreeController::class, 'getTreeData'])->name('ktb-tree.data');
+    Route::get('ktb-tree/member/{id}', [App\Http\Controllers\KtbTreeController::class, 'showMemberTree'])->name('ktb-tree.member');
+});

@@ -112,7 +112,7 @@ class KtbSeeder extends Seeder
             'mentee_id' => $memberA->id,
             'group_id' => $kelompokAndi->id,
             'started_at' => Carbon::parse('2020-02-01'),
-            'status' => 'active',
+            'status' => 'rutin',
         ]);
 
         KtbMemberRelationship::create([
@@ -120,7 +120,7 @@ class KtbSeeder extends Seeder
             'mentee_id' => $memberB->id,
             'group_id' => $kelompokAndi->id,
             'started_at' => Carbon::parse('2020-03-01'),
-            'status' => 'active',
+            'status' => 'rutin',
         ]);
 
         KtbMemberRelationship::create([
@@ -128,7 +128,7 @@ class KtbSeeder extends Seeder
             'mentee_id' => $memberC->id,
             'group_id' => $kelompokAndi->id,
             'started_at' => Carbon::parse('2020-04-01'),
-            'status' => 'active',
+            'status' => 'rutin',
         ]);
 
         KtbMemberRelationship::create([
@@ -136,7 +136,7 @@ class KtbSeeder extends Seeder
             'mentee_id' => $memberD->id,
             'group_id' => $kelompokAndi->id,
             'started_at' => Carbon::parse('2020-05-01'),
-            'status' => 'active',
+            'status' => 'rutin',
         ]);
 
         // Create Kelompok A (A membuka kelompok baru)
@@ -200,7 +200,7 @@ class KtbSeeder extends Seeder
             'mentee_id' => $memberE->id,
             'group_id' => $kelompokA->id,
             'started_at' => Carbon::parse('2021-02-01'),
-            'status' => 'active',
+            'status' => 'rutin',
         ]);
 
         KtbMemberRelationship::create([
@@ -208,7 +208,7 @@ class KtbSeeder extends Seeder
             'mentee_id' => $memberF->id,
             'group_id' => $kelompokA->id,
             'started_at' => Carbon::parse('2021-03-01'),
-            'status' => 'active',
+            'status' => 'rutin',
         ]);
 
         KtbMemberRelationship::create([
@@ -216,7 +216,7 @@ class KtbSeeder extends Seeder
             'mentee_id' => $memberG->id,
             'group_id' => $kelompokA->id,
             'started_at' => Carbon::parse('2021-04-01'),
-            'status' => 'active',
+            'status' => 'rutin',
         ]);
 
         // Create Kelompok B (B membuka kelompok baru)
@@ -266,7 +266,7 @@ class KtbSeeder extends Seeder
             'mentee_id' => $memberH->id,
             'group_id' => $kelompokB->id,
             'started_at' => Carbon::parse('2021-07-01'),
-            'status' => 'active',
+            'status' => 'rutin',
         ]);
 
         KtbMemberRelationship::create([
@@ -274,7 +274,7 @@ class KtbSeeder extends Seeder
             'mentee_id' => $memberI->id,
             'group_id' => $kelompokB->id,
             'started_at' => Carbon::parse('2021-08-01'),
-            'status' => 'active',
+            'status' => 'rutin',
         ]);
 
         $this->command->info('✅ Data KTB berhasil di-seed!');

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignId('group_id')->nullable()->constrained('ktb_groups')->nullOnDelete(); // Kelompok dimana relasi ini terjadi
             $table->date('started_at')->nullable(); // Tanggal mulai mentoring
             $table->date('ended_at')->nullable(); // Tanggal selesai mentoring
-            $table->enum('status', ['active', 'inactive', 'graduated'])->default('active'); // Status relasi
+            $table->enum('status', ['rutin', 'tidak rutin', 'dipotong'])->default('rutin'); // Status relasi
             $table->text('notes')->nullable(); // Catatan relasi
             $table->timestamps();
 
