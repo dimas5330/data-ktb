@@ -189,7 +189,7 @@ class KtbGroupController extends Controller
     {
         // Refresh member to get latest data
         $member->refresh();
-        
+
         // Find group leader first
         $leader = KtbMember::where('current_group_id', $member->current_group_id)
             ->where('is_leader', true)
@@ -199,7 +199,7 @@ class KtbGroupController extends Controller
         if (!$leader) {
             // If no leader, try to find the ACTUAL leader of the group
             $group = KtbGroup::with('leader')->find($member->current_group_id);
-            
+
             if ($group && $group->leader_id && $group->leader_id != $member->id) {
                 $leader = KtbMember::find($group->leader_id);
             }
@@ -232,7 +232,7 @@ class KtbGroupController extends Controller
                     'started_at' => now(),
                     'notes' => 'Auto-assigned when joining group',
                 ]);
-                
+
                 // Force recalculate generation after relationship created
                 $member->refresh();
                 $member->calculateAndUpdateGeneration();
