@@ -34,6 +34,13 @@ Route::middleware(['auth'])->group(function () {
 // KTB Member CRUD
 Route::resource('ktb-members', App\Http\Controllers\KtbMemberController::class)->middleware('auth');
 
+// KTB Group CRUD
+Route::middleware(['auth'])->group(function () {
+    Route::resource('ktb-groups', App\Http\Controllers\KtbGroupController::class);
+    Route::get('ktb-groups/{ktbGroup}/assign-members', [App\Http\Controllers\KtbGroupController::class, 'assignMembers'])->name('ktb-groups.assign-members');
+    Route::put('ktb-groups/{ktbGroup}/update-members', [App\Http\Controllers\KtbGroupController::class, 'updateMembers'])->name('ktb-groups.update-members');
+});
+
 // KTB Tree Visualization
 Route::middleware(['auth'])->group(function () {
     Route::get('ktb-tree', [App\Http\Controllers\KtbTreeController::class, 'index'])->name('ktb-tree.index');

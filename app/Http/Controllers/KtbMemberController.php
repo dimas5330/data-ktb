@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\KtbMember;
+use App\Models\KtbGroup;
 use Illuminate\Validation\Rule;
 
 class KtbMemberController extends Controller
@@ -22,7 +23,8 @@ class KtbMemberController extends Controller
      */
     public function create()
     {
-        return view('ktb_members.create');
+        $groups = KtbGroup::where('status', 'active')->orderBy('name')->get();
+        return view('ktb_members.create', compact('groups'));
     }
 
     /**
@@ -60,7 +62,8 @@ class KtbMemberController extends Controller
     public function edit(string $id)
     {
         $member = KtbMember::findOrFail($id);
-        return view('ktb_members.edit', compact('member'));
+        $groups = KtbGroup::where('status', 'active')->orderBy('name')->get();
+        return view('ktb_members.edit', compact('member', 'groups'));
     }
 
     /**

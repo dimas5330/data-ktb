@@ -36,6 +36,20 @@
                 </div>
 
                 <div>
+                    <label class="block text-sm font-medium text-zinc-900 dark:text-white">Kelompok KTB</label>
+                    <select name="current_group_id"
+                        class="mt-1 w-full rounded-lg border border-zinc-300 bg-white px-4 py-2 text-zinc-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 dark:border-zinc-600 dark:bg-zinc-800 dark:text-white dark:focus:border-blue-400">
+                        <option value="">-- Pilih Kelompok --</option>
+                        @foreach($groups as $group)
+                            <option value="{{ $group->id }}" {{ old('current_group_id', $member->current_group_id) == $group->id ? 'selected' : '' }}>
+                                {{ $group->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                    @error('current_group_id')<div class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</div>@enderror
+                </div>
+
+                <div>
                     <label class="block text-sm font-medium text-zinc-900 dark:text-white">Status</label>
                     <select name="status"
                         class="mt-1 w-full rounded-lg border border-zinc-300 bg-white px-4 py-2 text-zinc-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 dark:border-zinc-600 dark:bg-zinc-800 dark:text-white dark:focus:border-blue-400">

@@ -15,6 +15,7 @@
                 <flux:navlist.group :heading="__('Platform')" class="grid">
                     <flux:navlist.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>{{ __('Dashboard') }}</flux:navlist.item>
                     <flux:navlist.item icon="users" :href="route('ktb-members.index')" :current="request()->routeIs('ktb-members.*')" wire:navigate>{{ __('Anggota KTB') }}</flux:navlist.item>
+                    <flux:navlist.item icon="folder" :href="route('ktb-groups.index')" :current="request()->routeIs('ktb-groups.*')" wire:navigate>{{ __('Kelompok KTB') }}</flux:navlist.item>
                     <flux:navlist.item icon="folder-git-2" :href="route('ktb-tree.index')" :current="request()->routeIs('ktb-tree.*')" wire:navigate>{{ __('Pohon KTB') }}</flux:navlist.item>
                 </flux:navlist.group>
             </flux:navlist>
