@@ -65,4 +65,45 @@ class KtbMemberRelationship extends Pivot
     {
         return $this->status === 'dipotong';
     }
+
+    /**
+     * Boot method untuk auto-update generation
+     */
+    protected static function booted()
+    {
+        // Ketika relationship dibuat, update generation mentee
+        static::created(function ($relationship) {
+            $mentee = KtbMember::find($relationship->mentee_id);
+            if ($mentee) {
+                $mentee->calculateAndUpdateGeneration();
+
+                // Update all descendants recursively
+                static::updateDescendantsGeneration($mentee);
+            }
+        });
+
+        // Ketika relationship dihapus, recalculate generation mentee
+        static::deleted(function ($relationship) {
+            $mentee = KtbMember::find($relationship->mentee_id);
+            if ($mentee) {
+                $mentee->calculateAndUpdateGeneration();
+
+                // Update all descendants recursively
+                static::updateDescendantsGeneration($mentee);
+            }
+        });
+    }
+
+    /**
+     * Update generation untuk semua descendants
+     */
+    private static function updateDescendantsGeneration(KtbMember $member)
+    {
+        $mentees = $member->mentees()->get();
+
+        foreach ($mentees as $mentee) {
+            $mentee->calculateAndUpdateGeneration();
+            static::updateDescendantsGeneration($mentee);
+        }
+    }
 }

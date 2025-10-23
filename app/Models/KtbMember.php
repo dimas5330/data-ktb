@@ -171,4 +171,49 @@ class KtbMember extends Model
             }),
         ];
     }
+
+    /**
+     * Calculate generation from mentor chain
+     */
+    public function calculateGeneration(): int
+    {
+        // Jika tidak punya mentor = Generation 1 (Root)
+        if ($this->mentors()->count() === 0) {
+            return 1;
+        }
+
+        // Generation = Max(mentor generations) + 1
+        $maxMentorGen = $this->mentors()->max('generation');
+
+        return ($maxMentorGen ?? 0) + 1;
+    }
+
+    /**
+     * Calculate and update generation
+     */
+    public function calculateAndUpdateGeneration(): int
+    {
+        $newGeneration = $this->calculateGeneration();
+
+        // Only update if different
+        if ($this->generation !== $newGeneration) {
+            $this->update(['generation' => $newGeneration]);
+        }
+
+        return $newGeneration;
+    }
+
+    /**
+     * Get generation attribute with fallback to calculation
+     */
+    public function getGenerationAttribute($value)
+    {
+        // If generation exists, return it
+        if ($value !== null) {
+            return $value;
+        }
+
+        // Otherwise calculate it
+        return $this->calculateGeneration();
+    }
 }

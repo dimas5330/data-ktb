@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\KtbGroup;
 use App\Models\KtbMember;
+use App\Models\KtbMemberRelationship;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
@@ -165,11 +166,77 @@ class KtbGroupController extends Controller
 
         // Assign selected members to this group
         if (!empty($validated['member_ids'])) {
-            KtbMember::whereIn('id', $validated['member_ids'])
-                ->update(['current_group_id' => $ktbGroup->id]);
+            $members = KtbMember::whereIn('id', $validated['member_ids'])->get();
+
+            foreach ($members as $member) {
+                $member->update(['current_group_id' => $ktbGroup->id]);
+
+                // Auto-assign mentor if member is not a leader
+                if (!$member->is_leader) {
+                    $this->autoAssignMentor($member);
+                }
+            }
         }
 
         return redirect()->route('ktb-groups.show', $ktbGroup)
             ->with('success', 'Anggota kelompok berhasil diperbarui!');
+    }
+
+    /**
+     * Auto-assign mentor based on group leader
+     */
+    private function autoAssignMentor(KtbMember $member)
+    {
+        // Refresh member to get latest data
+        $member->refresh();
+        
+        // Find group leader first
+        $leader = KtbMember::where('current_group_id', $member->current_group_id)
+            ->where('is_leader', true)
+            ->where('id', '!=', $member->id)
+            ->first();
+
+        if (!$leader) {
+            // If no leader, try to find the ACTUAL leader of the group
+            $group = KtbGroup::with('leader')->find($member->current_group_id);
+            
+            if ($group && $group->leader_id && $group->leader_id != $member->id) {
+                $leader = KtbMember::find($group->leader_id);
+            }
+        }
+
+        if (!$leader) {
+            // Last resort: find senior member in same group
+            // Priority: lowest generation, then earliest ID
+            $leader = KtbMember::where('current_group_id', $member->current_group_id)
+                ->where('id', '!=', $member->id)
+                ->whereNotNull('generation')
+                ->orderBy('generation', 'asc')
+                ->orderBy('id', 'asc')
+                ->first();
+        }
+
+        if ($leader) {
+            // Check if relationship already exists
+            $exists = KtbMemberRelationship::where('mentor_id', $leader->id)
+                ->where('mentee_id', $member->id)
+                ->exists();
+
+            if (!$exists) {
+                // Create mentor-mentee relationship
+                KtbMemberRelationship::create([
+                    'mentor_id' => $leader->id,
+                    'mentee_id' => $member->id,
+                    'group_id' => $member->current_group_id,
+                    'status' => 'rutin',
+                    'started_at' => now(),
+                    'notes' => 'Auto-assigned when joining group',
+                ]);
+                
+                // Force recalculate generation after relationship created
+                $member->refresh();
+                $member->calculateAndUpdateGeneration();
+            }
+        }
     }
 }

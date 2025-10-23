@@ -28,13 +28,6 @@
                 </div>
 
                 <div>
-                    <label class="block text-sm font-medium text-zinc-900 dark:text-white">Generation</label>
-                    <input type="number" name="generation" min="1" value="{{ old('generation', 1) }}"
-                        class="mt-1 w-full rounded-lg border border-zinc-300 bg-white px-4 py-2 text-zinc-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 dark:border-zinc-600 dark:bg-zinc-800 dark:text-white dark:focus:border-blue-400">
-                    @error('generation')<div class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</div>@enderror
-                </div>
-
-                <div>
                     <label class="block text-sm font-medium text-zinc-900 dark:text-white">Kelompok KTB</label>
                     <select name="current_group_id"
                         class="mt-1 w-full rounded-lg border border-zinc-300 bg-white px-4 py-2 text-zinc-900 focus:border-blue-500 focus:ring-2 focus:ring-blue-500 dark:border-zinc-600 dark:bg-zinc-800 dark:text-white dark:focus:border-blue-400">
@@ -45,6 +38,9 @@
                             </option>
                         @endforeach
                     </select>
+                    <p class="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
+                        💡 Generation akan otomatis di-calculate berdasarkan mentor
+                    </p>
                     @error('current_group_id')<div class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</div>@enderror
                 </div>
 

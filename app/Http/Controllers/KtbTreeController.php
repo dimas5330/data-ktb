@@ -18,9 +18,10 @@ class KtbTreeController extends Controller
 
     public function getTreeData()
     {
-        // Find root members (members without mentors or generation 1)
-        $rootMembers = KtbMember::whereDoesntHave('mentors')
-            ->orWhere('generation', 1)
+        // Find ONLY TRUE root members (generation 1 AND no mentors)
+        // This prevents showing members who haven't been assigned mentors yet as separate roots
+        $rootMembers = KtbMember::where('generation', 1)
+            ->whereDoesntHave('mentors')
             ->with(['mentees', 'currentGroup'])
             ->get();
 

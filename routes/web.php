@@ -32,7 +32,16 @@ Route::middleware(['auth'])->group(function () {
 });
 
 // KTB Member CRUD
-Route::resource('ktb-members', App\Http\Controllers\KtbMemberController::class)->middleware('auth');
+Route::middleware(['auth'])->group(function () {
+    Route::resource('ktb-members', App\Http\Controllers\KtbMemberController::class);
+
+    // Mentee relationship management
+    Route::get('ktb-members/{member}/add-mentee', [App\Http\Controllers\KtbMemberController::class, 'addMentee'])->name('ktb-members.add-mentee');
+    Route::post('ktb-members/{member}/store-mentee', [App\Http\Controllers\KtbMemberController::class, 'storeMentee'])->name('ktb-members.store-mentee');
+    Route::get('ktb-members/{member}/mentee/{relationship}/edit', [App\Http\Controllers\KtbMemberController::class, 'editMentee'])->name('ktb-members.edit-mentee');
+    Route::put('ktb-members/{member}/mentee/{relationship}', [App\Http\Controllers\KtbMemberController::class, 'updateMentee'])->name('ktb-members.update-mentee');
+    Route::delete('ktb-members/{member}/mentee/{relationship}', [App\Http\Controllers\KtbMemberController::class, 'destroyMentee'])->name('ktb-members.destroy-mentee');
+});
 
 // KTB Group CRUD
 Route::middleware(['auth'])->group(function () {
